@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <meta-data name="com.baidu.lbsapi.API_KEY" value="EhQuGNL6pSyD45mgIfIaYWfk3yWcG7fK" />
+    <title>乡村规划</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+        }
+
+        .wrap {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+        }
+
+        header {
+            position:relative;
+            width: 100%;
+            height: 44px;
+            text-align: center;
+            background-color: #0b62ff;
+            color: #fff;
+            line-height: 44px;
+            font-size: 18px;
+        }
+
+        .flex-1 {
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:calc(100% - 44px);
+        }
+
+        footer {
+            height: 30px;
+            width: 100%;
+            background-color: #0b62ff;
+            color: white;
+            line-height: 30px;
+            text-align: center;
+        }
+        .back-btn{
+            position:absolute;
+            top:33px;
+            left:25px;
+            width:25px;
+            height:25px;
+            display:block;
+            z-index:99999;
+        }
+        .back-btn > span{
+            width:25px;
+            height:25px;
+            background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAMhJREFUSEvl1S0OAjEQxfH/XAiBwCAwCAyGZAln4UBAIMFgUBgMCsGFHtlkFMl2p90PQ3XTX96kL2OMcGwEgz9HJFVAZWbbyLizx+XAGbgMgpQAddJwklIgjHQBQkhXoBXpA0gifQGNSJ9ACtkAdReu0S6kStn4hSWtHbp1hZI9kbRy6N4Fai2jpCVwAh6lUCtSz1rSwqFnCRRCHJoDR+CVC4URh2bAAXjnQFmIQ1OHPlEoG3FoAuzMbD/I0oo8+nunKEkuNAryBZl6WBoxX/MLAAAAAElFTkSuQmCC);
+            display:inline-block;
+        }
+    </style>
+</head>
+
+<body class="wrap">
+    <header>
+        <a id="backBtn" href="javascript:void(0)" class="back-btn">
+            <span></span>
+        </a>
+        村庄规划数字化管理系统
+    </header>
+    <section class="flex-1"></section>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+    var backBtn;
+    apiready = function() {
+        //输出Log，Log将显示在APICloud Studio控制台
+        console.log("APICloud start!");
+
+        var header = $api.dom('header'); // 获取 header 标签元素
+        // var footer = $api.dom('footer'); // 获取 footer 标签元素
+
+        // 1.修复开启沉浸式效果带来的顶部Header与手机状态栏重合的问题，最新api.js方法已支持适配iPhoneX；
+        // 2.默认已开启了沉浸式效果 config.xml中 <preference name="statusBarAppearance" value="true"/>
+        // 3.沉浸式效果适配支持iOS7+，Android4.4+以上版本
+        var headerH = $api.fixStatusBar(header);
+        // 最新api.js为了适配iPhoneX增加的方法，修复底部Footer部分与iPhoneX的底部虚拟横条键重叠的问题；
+        // var footerH = $api.fixTabBar(footer);
+
+        api.openFrame({
+            name: 'main',
+            url: 'html/main.html',
+            bounces: false,
+            rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
+                marginTop: headerH, // main页面距离win顶部的高度
+                // marginBottom: footerH, // main页面距离win底部的高度
+                w: 'auto', // main页面的宽度 自适应屏幕宽度
+                h: 'auto'
+            },
+            slidBackEnabled:true,
+        });
+
+        var backBtn = $api.dom('#backBtn');
+        $api.addEvt(backBtn, 'click', function() {
+            api.historyBack({
+                frameName:'main',
+            }, function(ret, err) {
+                // console.log(ret);
+                if (!ret.status) {
+                    // console.log("close");
+                    api.closeWin();
+                }
+                // console.log("no-close");
+            });
+        });
+    };
+</script>
+
+</html>
